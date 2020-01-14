@@ -1,7 +1,7 @@
 # AutoKitten
 **Made by:** Yorian Hanckmann
 
-*Last update:* 12-01-2020
+*Last update:* 14-01-2020
 
 ## Dependecies:
 This program depens on the website: *https://placekitten.com*
