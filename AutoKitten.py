@@ -1,44 +1,32 @@
 import ctypes
 import datetime
 import os
+import shutil
 import time
 import urllib.request
 
 
 def select_option(options):
-    if isinstance(options, (int, float)):
-        opt = -1
+    _opt = -1
+    flag2 = True
+    while flag2:
+        print("\nWhat would you like to do?")
+        for num, _opt in options.items():
+            print(f"{num}. {_opt}")
+
         try:
-            opt = int(input("Kies een van de bovenstaande nummers: "))
+            _opt = float(input("Choose one of the above numbers: "))
         except TypeError:
-            print("Je moet wel een nummer invoeren!")
+            print("Please type only numbers!\n")
         except ValueError:
-            print("Je moet wel een nummer invoeren!")
-        if opt in range(1, (options + 1)):
-            return opt
+            print("Please type only numbers!\n")
+
+        if _opt != -1 and _opt in options.keys():
+            return _opt
+        elif _opt not in options.keys():
+            print(f"The option {_opt} is not aviable, please try again!")
         else:
-            print(f"Keuze {opt} is niet beschikbaar! Probeer het opnieuw!")
-    else:
-        _opt = -1
-        flag2 = True
-        while flag2:
-            print("\nWat wil je graag doen?")
-            for num, _opt in options.items():
-                print(f"{num}. {_opt}")
-
-            try:
-                _opt = float(input("Kies een van de bovenstaande opties: "))
-            except TypeError:
-                print("Voer AUB een nummer in!\n")
-            except ValueError:
-                print("Voer AUB een nummer in!\n")
-
-            if _opt != -1 and _opt in options.keys():
-                return _opt
-            elif _opt not in options.keys():
-                print(f"Keuze {_opt} is niet beschikbaar! Probeer het opnieuw!")
-            else:
-                print("Voer AUB een nummer in!\n")
+            print("Please type only numbers!\n")
 
 
 def get_image():
@@ -46,8 +34,13 @@ def get_image():
     print(f"\nLoading kitten background from {date}\n"
           f"And saving file as 'kitten {date}.jpg'"
           )
-    urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(date) + ".jpg")
-    time.sleep(1)
+    try:
+        urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(date) + ".jpg")
+        time.sleep(1)
+    except FileNotFoundError:
+        os.mkdir("images/")
+        urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(date) + ".jpg")
+        time.sleep(1)
     try:
         os.remove("images/currentKitten.jpg")
         time.sleep(1)
@@ -85,18 +78,23 @@ while True:
         os.startfile(os.path.abspath("images/"))
         opt = select_option(options_dict)
     elif opt == 3:
-        print("Not yet implemented, but coming soon\n!")
+        # TODO: Add pruning on month basis
+        print("Not yet implemented, but coming soon!\n")
         opt = select_option(options_dict)
     elif opt == 4:
-        confirm = str(int("Are you sure? "))
+        confirm = str(input("Are you sure? ")).lower()
         if confirm == "y":
-            os.removedirs(os.path.abspath("images/"))
+            try:
+                shutil.rmtree(os.path.abspath("images/"))
+                print("Succesfully removed directory!\n")
+            except FileNotFoundError:
+                print("Directory is already removed!\n")
         elif confirm == "n":
             print("Okay, glad you cancelled!\n")
             opt = select_option(options_dict)
         else:
             print("Confirmation is wrong, going to main menu\n")
-            opt = select_option(options_dict)
+        opt = select_option(options_dict)
     else:
         print("Option not found, showing main menu\n")
         opt = select_option(options_dict)
