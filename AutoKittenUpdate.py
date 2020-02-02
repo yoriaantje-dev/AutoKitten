@@ -1,16 +1,16 @@
 import ctypes
+import datetime
 import os
 import time
 import urllib.request
 
 
-def get_image(_num):
-    print(f"\nLoading kitten background number {_num}\n"
-          f"And saving file as 'kitten {_num}.jpg'"
+def get_image(_date):
+    print(f"\nLoading kitten background from {_date}\n"
+          f"And saving file as 'kitten {_date}.jpg'"
           )
-    urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(_num) + ".jpg")
-    time.sleep(1
-               )
+    urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(_date) + ".jpg")
+    time.sleep(1)
     try:
         os.remove("images/currentKitten.jpg")
         time.sleep(1)
@@ -20,23 +20,10 @@ def get_image(_num):
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/currentKitten.jpg")
 
 
-def get_num():
-    try:
-        num = os.listdir('images/')
-        num = (len(num))
-    except FileNotFoundError:
-        os.mkdir('images/')
-        num = os.listdir('images/')
-        num = (len(num))
-    if num == 0:
-        num = 1
-    return num
-
-
 print("Welcome to the AutoKitten function!")
-number = get_num()
+date = datetime.date.today()
 time.sleep(1)
-get_image(number)
+get_image(date)
 
 time.sleep(1.5)
 abs_path = os.path.abspath("images/currentKitten.jpg")
