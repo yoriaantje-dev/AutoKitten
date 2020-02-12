@@ -3,6 +3,7 @@ import datetime
 import os
 import shutil
 import time
+import urllib.error
 import urllib.request
 
 
@@ -34,20 +35,25 @@ def get_image():
     print(f"\nLoading kitten background from {date}\n"
           f"And saving file as 'kitten {date}.jpg'"
           )
-    try:
+    try:  # Download kitten+date.jpg
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(date) + ".jpg")
         time.sleep(1)
     except FileNotFoundError:
         os.mkdir("images/")
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(date) + ".jpg")
         time.sleep(1)
-    try:
+    except urllib.error.URLError:
+        print("Something Strange went wrong, do you have an active internetconnection?")
+
+    try:  # Download currentKitten.jpg
         os.remove("images/currentKitten.jpg")
         time.sleep(1)
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/currentKitten.jpg")
     except FileNotFoundError:
         time.sleep(1.5)
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/currentKitten.jpg")
+    except urllib.error.URLError:
+        print("Something Strange went wrong, do you have an active internetconnection?")
 
 
 def set_background():
@@ -69,6 +75,7 @@ opt = select_option(options_dict)
 while True:
     if opt == 0:
         print("Sorry to see you go, thanks for using!")
+        exit()
     elif opt == 1:
         get_image()
         set_background()
