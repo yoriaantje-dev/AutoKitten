@@ -33,9 +33,9 @@ def select_option(options):
 def get_image():
     date = datetime.date.today()
     print(f"\nLoading kitten background from {date}\n"
-          f"And saving file as 'kitten {date}.jpg'"
-          )
-    try:  # Download kitten+date.jpg
+          f"And saving file as 'kitten {date}.jpg'")
+    # Download kitten+date.jpg
+    try:
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/kitten " + str(date) + ".jpg")
         time.sleep(1)
     except FileNotFoundError:
@@ -45,7 +45,8 @@ def get_image():
     except urllib.error.URLError:
         print("Something Strange went wrong, do you have an active internetconnection?")
 
-    try:  # Download currentKitten.jpg
+    # Download currentKitten.jpg
+    try:
         os.remove("images/currentKitten.jpg")
         time.sleep(1)
         urllib.request.urlretrieve("https://placekitten.com/1920/1080", "images/currentKitten.jpg")
@@ -67,8 +68,7 @@ options_dict = {
     0: "Close program",
     1: "Run the AutoKitten Function and update my background",
     2: "Open the folder with the images",
-    3: "Prune all the images from last month",
-    4: "Prune all the images in general"
+    3: "Prune all the images in general"
 }
 opt = select_option(options_dict)
 
@@ -85,10 +85,6 @@ while True:
         os.startfile(os.path.abspath("images/"))
         opt = select_option(options_dict)
     elif opt == 3:
-        # TODO: Add pruning on month basis
-        print("Not yet implemented, but coming soon!\n")
-        opt = select_option(options_dict)
-    elif opt == 4:
         confirm = str(input("Are you sure? ")).lower()
         if confirm == "y":
             try:
