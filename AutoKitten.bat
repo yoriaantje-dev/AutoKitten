@@ -1,6 +1,6 @@
 @echo off
 echo Welcome!
-py AutoKitten.py
+py AutoKittenTerminal.py
 echo Thanks for using!
 timeout 5
 exit
