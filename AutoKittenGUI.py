@@ -6,8 +6,11 @@ import time
 import urllib.error
 import urllib.request
 
-
 # Tkinter Imports
+try:
+    import tkinter
+except ModuleNotFoundError:
+    pass
 
 
 def get_image():
